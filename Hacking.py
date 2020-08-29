@@ -15,7 +15,7 @@ def check(chars, repeat):
     pws = product(chars, repeat=repeat)
     for pwObj in pws:
         password = ''.join(pwObj)
-        if password == target: 
+        if (password == target): 
             return password
 # 実行
 start = time.time()
