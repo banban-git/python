@@ -3,12 +3,12 @@ import getpass
 from itertools import product
 
 # パスワード
-target = getpass.getpass(prompt="パスワードを入力して下さい(5文字)：")
+target = "zzzzz"
 print("あなたが入力したパスワードを解析中.....")
 # 入力可能文字
 chars = '0123456789abcdefghijklmnopqrstuvwxyz'
 # 入力可能文字数
-inputLength = 5
+inputLength = len(target)
 
 # チェック関数
 def check(chars, repeat):
