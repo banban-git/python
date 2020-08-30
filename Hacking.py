@@ -3,7 +3,7 @@ import getpass
 from itertools import product
 
 # パスワード
-target = "zzzzz" 
+target = "test" 
 print("あなたが入力したパスワードを解析中.....")
 # 入力可能文字
 chars = '0123456789abcdefghijklmnopqrstuvwxyz'
@@ -25,4 +25,4 @@ else:
     print('パスワードが見つかりました -->', pw)
 
 finish = time.time() - start
-print(round(finish, 2) , "秒");
+print(round(finish, 2) , "秒")
