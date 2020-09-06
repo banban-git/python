@@ -1,0 +1,10 @@
+# Ignore Gradle project-specific cache directory
+images/
+images_test/
+training_summaries/
+retrained_graph.pb
+retrained_labels.txt
+bottlenecks/
+
+# Ignore Gradle build output directory
+
