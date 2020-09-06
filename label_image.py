@@ -137,3 +137,7 @@ if __name__ == "__main__":
   print("")
   for i in top_k:
     print(labels[i] + "：" + str(round(results[i] * 100, 2)) + "%")
+  
+  print("")
+  print("この画像は、" + labels[max(enumerate(results), key = lambda x:x[1])[0]] + "の画像と判定しました。")
+  
