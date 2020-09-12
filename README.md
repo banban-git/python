@@ -16,6 +16,7 @@ pip install youtube-dl
 pip install google_images_download
 pip install tensorflow==1.14
 pip install numpy==1.16.4
+pip install -U pyxel
 
 # setting.json
 変更前
@@ -27,10 +28,10 @@ pip install numpy==1.16.4
 # 機械学習
 #----------------
 # 画像取得
-python /c/work/test/google-images-download/bing_scraper.py --search '文字' --format 'jpg' --limit 100 --download --chromedriver C:/work/install/chromedriver
+python bing_scraper.py --search '西川貴教' --format 'jpg' --limit 100 --download --chromedriver chromedriver
 
-# 解析
-python retrain.py --bottleneck_dir=bottlenecks --how_many_training_steps=200 --model_dir=inception --summaries_dir=training_summaries/basic --output_graph=retrained_graph.pb --output_labels=retrained_labels.txt --image_dir=images
+# 解析 (学習回数＝1000回)
+python retrain.py --bottleneck_dir=bottlenecks --how_many_training_steps=1000 --model_dir=inception --summaries_dir=training_summaries/basic --output_graph=retrained_graph.pb --output_labels=retrained_labels.txt --image_dir=images
 
 # 実行
 python label_image.py --graph=retrained_graph.pb --labels=retrained_labels.txt --output_layer=final_result --image=images_test/hanbetu1.jpg --input_layer=Placeholder
