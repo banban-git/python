@@ -28,7 +28,7 @@ pip install -U pyxel
 # 機械学習
 #----------------
 # 画像取得
-python bing_scraper.py --search '西川貴教' --format 'jpg' --limit 100 --download --chromedriver chromedriver
+python bing_scraper.py --search '検索文字' --format 'jpg' --limit 100 --download --chromedriver chromedriver
 
 # 解析 (学習回数＝1000回)
 python retrain.py --bottleneck_dir=bottlenecks --how_many_training_steps=1000 --model_dir=inception --summaries_dir=training_summaries/basic --output_graph=retrained_graph.pb --output_labels=retrained_labels.txt --image_dir=images
