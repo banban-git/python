@@ -31,7 +31,7 @@ pip install -U pyxel
 python bing_scraper.py --search '検索文字' --format 'jpg' --limit 100 --download --chromedriver chromedriver
 
 # 解析 (学習回数＝1000回)
-python retrain.py --bottleneck_dir=bottlenecks --how_many_training_steps=1000 --model_dir=inception --summaries_dir=training_summaries/basic --output_graph=retrained_graph.pb --output_labels=retrained_labels.txt --image_dir=images
+python retrain.py --bottleneck_dir=bottlenecks --how_many_training_steps=100 --model_dir=inception --summaries_dir=training_summaries/basic --output_graph=retrained_graph.pb --output_labels=retrained_labels.txt --image_dir=images
 
 # 実行
 python label_image.py --graph=retrained_graph.pb --labels=retrained_labels.txt --output_layer=final_result --image=images_test/hanbetu1.jpg --input_layer=Placeholder
