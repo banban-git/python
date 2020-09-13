@@ -1,10 +1,10 @@
 # Ignore Gradle project-specific cache directory
-images/
-images_test/
-training_summaries/
-retrained_graph.pb
-retrained_labels.txt
-bottlenecks/
+src/machine_learning/images/
+src/machine_learning/images_test/
+src/machine_learning/training_summaries/
+src/machine_learning/retrained_graph.pb
+src/machine_learning/retrained_labels.txt
+src/machine_learning/bottlenecks/
 
 # Ignore Gradle build output directory
 
