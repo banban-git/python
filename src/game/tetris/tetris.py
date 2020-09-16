@@ -1,5 +1,6 @@
 from random import randint
 import pyxel
+import time
 
 TILE_SIZE = 8
 MAP_WIDTH = 14
@@ -7,6 +8,7 @@ MAP_HEIGHT = 25
 WAIT = 60
 
 class Tetris:
+    # コンストラクタ
     def __init__(self):
         self.mGameover = False
         self.mNext = randint(0, 6)
@@ -17,6 +19,9 @@ class Tetris:
 
         pyxel.init(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, scale=3, fps=15)
         pyxel.load("tetris.pyxres")
+
+        # テトリス音楽 タブ譜参照（https://note.com/vebe/n/n2cea8393e552）
+        pyxel.playm(0, loop=True)
 
         self.next()
         
@@ -59,8 +64,10 @@ class Tetris:
 
     def draw(self):
         pyxel.bltm(0, 0, 0, 0, 0, MAP_WIDTH, MAP_HEIGHT)
+
         if self.mGameover:
             pyxel.text(40, 80, "GAME OVER", 7)
+
     def put(self, x, y, t, a, s, test):
         for j in range(4):
             for i in range(4):
