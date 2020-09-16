@@ -1,10 +1,34 @@
 # 環境構築
-python3.6.8をインストール  
+
+１）Gitをインストール
+https://gitforwindows.org/
+<img src="install/gitInstall.png">
+
+２）GitHubに接続（下記を参照）
+https://qiita.com/hollyhock0518/items/a3fee20951cd92c87ed9
+<img src="install/gitHub.png">
+
+３）python3.6.8をインストール
 インストールフォルダの下記のファイルを実行
 > install/python-3.6.8-amd64.exe
 
 **インストール時は、パスを追加にチェックをいれる**
 <img src="install/python_installer.png">
+
+４）VsCodeをインストール  
+https://eng-entrance.com/texteditor-vscode
+<img src="install/VisualStudioCode.png">  
+
+５）レポジトリをダウンロード  
+作業フォルダを作成して、下記のコマンドを実行
+```
+git clone https://github.com/banban-git/python.git
+```
+
+６）Visual Studioでpythonレポジトリを取り込む  
+フォルダを開く　→ 5) でクローンしたレポジトリを選択
+<img src="install/VisualStudioCode_project.png">
+
 
 # ライブラリインストール
 コマンドを全て実行し、ライブラリをインストールする。
@@ -24,6 +48,7 @@ pip install google_images_download
 pip install tensorflow==1.14
 pip install numpy==1.16.4
 pip install -U pyxel
+pip install pyinstaller
 ```
 # ■機械学習
 作業フォルダ
@@ -49,6 +74,9 @@ python retrain.py --bottleneck_dir=bottlenecks --how_many_training_steps=100 --m
 python label_image.py --graph=retrained_graph.pb --labels=retrained_labels.txt --output_layer=final_result --image=images_test/hanbetu1.jpg --input_layer=Placeholder
 ```
 
+
+pyxeleditor raa
+pyxeleditor raa
 
 # setting.json(作業メモ)
 変更前
