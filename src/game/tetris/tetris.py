@@ -17,7 +17,7 @@ class Tetris:
         self.mA = 0
         self.mWait = 0
 
-        pyxel.init(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, scale=3, fps=15)
+        pyxel.init(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, scale=3, fps=13)
         pyxel.load("tetris.pyxres")
 
         # テトリス音楽 
