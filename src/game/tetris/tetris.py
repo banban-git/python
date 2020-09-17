@@ -40,8 +40,10 @@ class Tetris:
         #self.put(self.mX, self.mY, self.mT, self.mA, True, False)
         a = self.mA
         if pyxel.btnp(pyxel.KEY_X):
+            pyxel.play(2, 11)
             a -= 1
         if pyxel.btnp(pyxel.KEY_Z):
+            pyxel.play(2, 11)
             a += 1
         a &= 3
         if self.put(self.mX, self.mY, self.mT, a, True, True):
@@ -121,6 +123,7 @@ class Tetris:
         if self.mWait == 1:
             for y in range(22, 2, -1):
                 while pyxel.tilemap(0).get(2, y) == 10:
+                    pyxel.play(2, 12)
                     self.mWait = WAIT / 2 -2
                     for i in range(y, 3, -1):
                         for x in range(2 ,12):
