@@ -20,16 +20,17 @@ class Tetris:
         pyxel.init(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, scale=3, fps=15)
         pyxel.load("tetris.pyxres")
 
-        # テトリス音楽 タブ譜参照（https://note.com/vebe/n/n2cea8393e552）
+        # テトリス音楽 
+        # タブ譜参照（https://www.youtube.com/watch?v=nKj_BaIVb2U）
+        #https://www.youtube.com/watch?v=NuhuzJAibNI
         pyxel.playm(0, loop=True)
 
         self.next()
         
         pyxel.run(self.update, self.draw)
     def update(self):
-        # ゲームオーバーの場合
         if self.mGameover:
-            # 終了
+            # ゲームオーバー
             return
         if self.mWait <= WAIT / 2:
             self.wait()
