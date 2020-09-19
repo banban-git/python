@@ -11,6 +11,8 @@ BLACK_AREA = 7    #（黒）タイルマップの右下の図の、左から7番
 WHITE_BLOCK = 10  #（白）タイルマップの右下の図の、左から10番目が白
 SCORE_ROW_LINE_COMPLETE = 1000 #1行けした時の、ポイント
 SCORE_BLOCK_PUT = 10 #ブロックをおいた時の、ポイント
+SCENE_TITLE = 0      #タイトル画面
+SCENE_MAIN_GAME = 1  #メイン画面
 
 class Tetris:
     # コンストラクタ
@@ -28,7 +30,8 @@ class Tetris:
         self.mWait = 0
         # スコア
         self.score = 0
-        self.scene = 0
+        # シーン
+        self.scene = SCENE_TITLE
 
         # 初期設定
         pyxel.init(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, scale=3, fps=10)
@@ -48,7 +51,7 @@ class Tetris:
     # --------------------------------------------
     def draw(self):
         pyxel.cls(0)
-        if self.scene == 0 :
+        if self.scene == SCENE_TITLE :
             # 矩形を描画
             pyxel.text(32, 66, "Pyxel TETRIS", pyxel.frame_count % 16)
             pyxel.text(26, 96, "- PRESS ENTER -", 13)
@@ -59,8 +62,8 @@ class Tetris:
     # --------------------------------------------
     def update(self):
         if pyxel.btnp(pyxel.KEY_ENTER):
-            self.scene = 1
-        if self.scene == 1 :
+            self.scene = SCENE_MAIN_GAME
+        if self.scene == SCENE_MAIN_GAME :
             self.main_update()
 
     def main_draw(self):
