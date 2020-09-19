@@ -37,9 +37,9 @@ class Tetris:
         #実行（update関数 ⇒ draw関数 ⇒ update関数 ⇒ draw関数 ... と永遠とループする）
         pyxel.run(self.update, self.draw)
     
-    # ---------------
+    # --------------------------------
     # 関数（画面描画）
-    # ---------------
+    # --------------------------------
     def draw(self):
         # 画面（タイルマップ）
         pyxel.bltm(0, 0, 0, 0, 0, MAP_WIDTH, MAP_HEIGHT)
@@ -47,42 +47,32 @@ class Tetris:
         if self.mGameover: 
             pyxel.text(40, 80, "GAME OVER", 7)
     
-    # ---------------
+    # --------------------------------
     # 関数（画面更新）
-    # ---------------
+    # --------------------------------
     def update(self):
         # ゲームオーバー
         if self.mGameover:
             return
+        # 待ち時間に到達した場合、Wait処理実行
         if self.mWait <= WAIT / 2:    
             self.wait()
             return
         
         self.put(self.mX, self.mY, self.mT, self.mA, False, True)
         
-        a = self.mA
-        if pyxel.btnp(pyxel.KEY_X):
-            pyxel.play(2, 11)
-            a -= 1
-        if pyxel.btnp(pyxel.KEY_Z):
-            pyxel.play(2, 11)
-            a += 1
-        a &= 3
+        # A座標取得(Ｘボタン、Ｚボタンで座標が切り替わっている事を考慮)
+        a = self.getMa()
         if self.put(self.mX, self.mY, self.mT, a, True, False):
             self.mA = a
-        
-        x = self.mX
-        # 左ボタンを押した場合
-        if pyxel.btnp(pyxel.KEY_LEFT, 20, 1):
-            x -= 1
-        # 右ボタンを押した場合
-        if pyxel.btnp(pyxel.KEY_RIGHT, 20, 1):
-            x += 1
+        # X座標取得(左ボタン、右ボタンで座標が切り替わっている事を考慮)
+        x = self.getMx()
         if self.put(x, self.mY, self.mT, self.mA, True, False):
             self.mX = x
         
         # 一番下にブロックがあるか判定
         if self.put(x, self.mY + 1, self.mT, self.mA, True, False):
+            # 下にない場合は、Y座標を1つ下にさげる
             self.mY += 1
             self.mWait = WAIT
         else:
@@ -90,7 +80,35 @@ class Tetris:
 
         self.put(self.mX, self.mY, self.mT, self.mA, True, True)
     
-    # ---------------
+    # --------------------------------
+    # 関数（?）
+    # --------------------------------
+    def getMa(self):
+        a = self.mA
+        if pyxel.btnp(pyxel.KEY_X):
+            pyxel.play(2, 11)
+            a -= 1
+        if pyxel.btnp(pyxel.KEY_Z):
+            pyxel.play(2, 11)
+            a += 1
+        # 軸
+        a &= 3
+        return a;
+    
+    # --------------------------------
+    # 関数（x座標取得）
+    # --------------------------------
+    def getMx(self):
+        mX = self.mX
+        # 左ボタンを押した場合
+        if pyxel.btnp(pyxel.KEY_LEFT, 20, 1):
+            mX -= 1
+        # 右ボタンを押した場合
+        if pyxel.btnp(pyxel.KEY_RIGHT, 20, 1):
+            mX += 1
+        return mX;
+
+    # --------------------------------
     # 関数（ブロック設定）
     #
     # @param mX X座標
@@ -99,7 +117,7 @@ class Tetris:
     # @param mA
     # @param s
     # @param isBlockSet ブロックを画面に設定(True:設定、False:未設定)
-    # ---------------
+    # --------------------------------
     def put(self, mX, mY, mNextBlockNo, mA, s, isBlockSet):
         for j in range(4):
             for i in range(4):
@@ -117,9 +135,9 @@ class Tetris:
                     pyxel.tilemap(0).set( mX + i, mY + j, v)
         return True
     
-    # --------------------
+    # --------------------------------
     # 関数（次ブロック設定）
-    # --------------------
+    # --------------------------------
     def next(self):
         self.mX = 5
         self.mY = 2
@@ -139,10 +157,10 @@ class Tetris:
         self.mNextBlockNo = randint(0, 6)
         self.put(5, -1, self.mNextBlockNo, 0 , True, True)
 
-    # --------------------------
+    # --------------------------------
     # 関数（横一列設定）
     #  横一列が埋まっていた場合は、"10"(横一列complete)を設定する
-    # --------------------------
+    # --------------------------------
     def set_row_line_Complete(self):
         # 上から下まで（22～3までループ）
         for y in range(22, 2, -1):
@@ -157,9 +175,9 @@ class Tetris:
                     # "10"を設定
                     pyxel.tilemap(0).set(x, y ,10)
 
-    # ---------------
+    # --------------------------------
     # 関数（待機処理）
-    # ---------------
+    # --------------------------------
     def wait(self):
         # mWaitを１減らす
         self.mWait -= 1
