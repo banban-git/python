@@ -21,6 +21,7 @@ class Tetris:
         self.mX = 0
         # y座標
         self.mY = 0
+        # 回転軸座標（0 ～ 3）
         self.mA = 0
         # 待ち時間
         self.mWait = 0
@@ -55,10 +56,11 @@ class Tetris:
         if self.mGameover:
             return
         # 待ち時間に到達した場合、Wait処理実行
-        if self.mWait <= WAIT / 2:    
+        if self.mWait <= WAIT / 2:
             self.wait()
             return
         
+        # 表示されているブロックを削除
         self.put(self.mX, self.mY, self.mT, self.mA, False, True)
         
         # A座標取得(Xボタン、Zボタンで座標が切り替わっている事を考慮)
@@ -81,7 +83,7 @@ class Tetris:
         else:
             self.mWait -= 1
 
-        # 描画
+        # 確定した座標で描画
         self.put(self.mX, self.mY, self.mT, self.mA, True, True)
     
     # --------------------------------
@@ -118,11 +120,11 @@ class Tetris:
     # @param mX X座標
     # @param mY Y座標
     # @param mNextBlockNo 次ブロックNo
-    # @param mA
-    # @param s
+    # @param mA 回転軸ざ行
+    # @param isEraseBlock
     # @param isBlockSet ブロックを画面に設定(True:設定、False:未設定)
     # --------------------------------
-    def put(self, mX, mY, mNextBlockNo, mA, s, isBlockSet):
+    def put(self, mX, mY, mNextBlockNo, mA, isEraseBlock, isBlockSet):
         for j in range(4):
             for i in range(4):
                 p = [ i, 3 -j, 3 - i,     j ]
@@ -130,7 +132,7 @@ class Tetris:
                 if pyxel.tilemap(0).get(16 + mNextBlockNo * 4 + p[mA], q[mA]) == 7:
                     continue
                 v = mNextBlockNo
-                if s == False:
+                if isEraseBlock == False:
                     v = 7
                 elif pyxel.tilemap(0).get( mX + i, mY + j) != 7:
                     return False;
