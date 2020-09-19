@@ -53,7 +53,7 @@ class Tetris:
             pyxel.text(40, 80, "GAME OVER", 7)
         
         # draw score
-        pyxel.text(1, 2, "Score:", 7)
+        pyxel.text(1, 2, "SCORE:", 7)
         pyxel.text(15, 9, format(self.score), 7)
 
     # --------------------------------------------
