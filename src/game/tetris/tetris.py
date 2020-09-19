@@ -2,14 +2,13 @@ from random import randint
 import pyxel
 import time
 
-#タイルサイズ
-TILE_SIZE = 8
-#画面横サイズ
-MAP_WIDTH = 14
-#画面縦サイズ
-MAP_HEIGHT = 25
-#待ち時間
-WAIT = 20
+#固定値
+TILE_SIZE = 8     # タイルサイズ
+MAP_WIDTH = 14    # 画面横サイズ
+MAP_HEIGHT = 25   # 画面縦サイズ
+WAIT = 12         # 待ち時間
+BLACK_AREA = 7    #（黒）タイルマップの右下の図の、左から7番目が黒
+WHITE_BLOCK = 10  #（白）タイルマップの右下の図の、左から10番目が白
 
 class Tetris:
     # コンストラクタ
@@ -28,6 +27,7 @@ class Tetris:
 
         # 初期設定
         pyxel.init(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, scale=3, fps=10)
+        # 設定ファイル（コマンドで参照可 → pyxeleditor tetris.pyxres)
         pyxel.load("tetris.pyxres")
 
         # テトリス音楽 再生
@@ -63,7 +63,7 @@ class Tetris:
         # 表示されているブロックを削除
         self.put(self.mX, self.mY, self.mT, self.mA, False, True)
         
-        #ここから再描画 ↓↓↓
+        #ここから更新 ↓↓↓
         # A座標取得(Xボタン、Zボタンで座標が切り替わっている事を考慮)
         a = self.getMa()
         if self.put(self.mX, self.mY, self.mT, a, True, False):
@@ -75,7 +75,7 @@ class Tetris:
         if self.put(x, self.mY, self.mT, self.mA, True, False):
             # 移動できる場合は、座標をずらす
             self.mX = x
-        
+
         # 一番下にブロックがあるか判定
         if self.put(x, self.mY + 1, self.mT, self.mA, True, False):
             # 下にない場合は、Y座標を1つ下にさげる
@@ -84,7 +84,7 @@ class Tetris:
         else:
             self.mWait -= 1
 
-        # 確定した座標で描画
+        # 確定した座標で更新
         self.put(self.mX, self.mY, self.mT, self.mA, True, True)
     
     # --------------------------------
@@ -98,7 +98,9 @@ class Tetris:
         if pyxel.btnp(pyxel.KEY_Z):
             pyxel.play(2, 11)
             a += 1
-        # 軸
+        # 回転
+        # a = 0 の場合 0、 a = 1 の場合 1、a = 2 の場合 2、 a = 3 の場合 3
+        # a = 4 の場合 0、 a = -1 の場合 3
         a &= 3
         return a;
     
@@ -128,14 +130,17 @@ class Tetris:
     def put(self, mX, mY, mNextBlockNo, mA, isEraseBlock, isBlockSet):
         for j in range(4):
             for i in range(4):
+                # 全反転パターン定義
                 p = [ i, 3 -j, 3 - i,     j ]
                 q = [ j,    i, 3 - j,  3 -i ]
-                if pyxel.tilemap(0).get(16 + mNextBlockNo * 4 + p[mA], q[mA]) == 7:
+                # 7(黒色の場合) 
+                if pyxel.tilemap(0).get(16 + mNextBlockNo * 4 + p[mA], q[mA]) == BLACK_AREA:
                     continue
                 v = mNextBlockNo
                 if isEraseBlock == False:
-                    v = 7
-                elif pyxel.tilemap(0).get( mX + i, mY + j) != 7:
+                    v = BLACK_AREA
+                elif pyxel.tilemap(0).get( mX + i, mY + j) != BLACK_AREA:
+                    # 移動後のブロックが7以外（何かしらのブラックがある）場合
                     return False;
                 
                 if isBlockSet:
@@ -157,7 +162,9 @@ class Tetris:
         if pyxel.btn(pyxel.KEY_Z):
             self.mA = 1
         
+        #次に置くブロックが既におけない場合
         if self.put(self.mX, self.mY, self.mT, self.mA, True, True) == False:
+            # ゲームオーバー
             self.mGameover = True
         
         self.put(5, -1, self.mNextBlockNo, 0 , False, True)
@@ -179,8 +186,8 @@ class Tetris:
             # 横一列全て埋まった場合
             if n == 10:
                 for x in range(2, 12):
-                    # "10"を設定
-                    pyxel.tilemap(0).set(x, y ,10)
+                    # "10"（白）を設定 タイルマップの右下の図の、左から10番目が白
+                    pyxel.tilemap(0).set(x, y ,WHITE_BLOCK)
 
     # --------------------------------
     # 関数（待機処理）
@@ -204,7 +211,7 @@ class Tetris:
             # 上から下まで（22～3までループ）
             for y in range(22, 2, -1):
                 # 横一列が全てうまっていた場合
-                while pyxel.tilemap(0).get(2, y) == 10:
+                while pyxel.tilemap(0).get(2, y) == WHITE_BLOCK:
                     
                     # 効果音再生
                     pyxel.play(2, 12)
