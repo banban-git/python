@@ -21,7 +21,7 @@ class Tetris:
         # y座標
         self.mY = 0
         # 回転軸座標（0 ～ 3）
-        self.mA = 0
+        self.mRotaionNo = 0
         # 待ち時間
         self.mWait = 0
 
@@ -61,23 +61,23 @@ class Tetris:
             return
         
         # 表示されているブロックを削除
-        self.put(self.mX, self.mY, self.mT, self.mA, False, True)
+        self.put(self.mX, self.mY, self.mT, self.mRotaionNo, False, True)
         
         #ここから更新 ↓↓↓
         # A座標取得(Xボタン、Zボタンで座標が切り替わっている事を考慮)
-        a = self.getMa()
-        if self.put(self.mX, self.mY, self.mT, a, True, False):
+        mRotaionNo = self.getRotaionNo()
+        if self.put(self.mX, self.mY, self.mT, mRotaionNo, True, False):
             # 移動できる場合は、座標をずらす
-            self.mA = a
+            self.mRotaionNo = mRotaionNo
 
         # X座標取得(左ボタン、右ボタンで座標が切り替わっている事を考慮)
         x = self.getMx()
-        if self.put(x, self.mY, self.mT, self.mA, True, False):
+        if self.put(x, self.mY, self.mT, self.mRotaionNo, True, False):
             # 移動できる場合は、座標をずらす
             self.mX = x
 
         # 一番下にブロックがあるか判定
-        if self.put(x, self.mY + 1, self.mT, self.mA, True, False):
+        if self.put(x, self.mY + 1, self.mT, self.mRotaionNo, True, False):
             # 下にない場合は、Y座標を1つ下にさげる
             self.mY += 1
             self.mWait = WAIT
@@ -85,24 +85,28 @@ class Tetris:
             self.mWait -= 1
 
         # 確定した座標で更新
-        self.put(self.mX, self.mY, self.mT, self.mA, True, True)
+        self.put(self.mX, self.mY, self.mT, self.mRotaionNo, True, True)
     
     # --------------------------------
     # 関数（?）
     # --------------------------------
-    def getMa(self):
-        a = self.mA
+    def getRotaionNo(self):
+        mRotaionNo = self.mRotaionNo
         if pyxel.btnp(pyxel.KEY_X):
             pyxel.play(2, 11)
-            a -= 1
+            mRotaionNo -= 1
         if pyxel.btnp(pyxel.KEY_Z):
             pyxel.play(2, 11)
-            a += 1
+            mRotaionNo += 1
         # 回転
-        # a = 0 の場合 0、 a = 1 の場合 1、a = 2 の場合 2、 a = 3 の場合 3
-        # a = 4 の場合 0、 a = -1 の場合 3
-        a &= 3
-        return a;
+        # mRotaionNo = 0 の場合 0
+        # mRotaionNo = 1 の場合 1
+        # mRotaionNo = 2 の場合 2
+        # mRotaionNo = 3 の場合 3
+        # mRotaionNo = 4 の場合 0
+        # mRotaionNo = -1 の場合 3
+        mRotaionNo &= 3
+        return mRotaionNo;
     
     # --------------------------------
     # 関数（x座標取得）
@@ -127,14 +131,15 @@ class Tetris:
     # @param isEraseBlock
     # @param isBlockSet ブロックを画面に設定(True:設定、False:未設定)
     # --------------------------------
-    def put(self, mX, mY, mNextBlockNo, mA, isEraseBlock, isBlockSet):
+    def put(self, mX, mY, mNextBlockNo, mRotaionNo, isEraseBlock, isBlockSet):
         for j in range(4):
             for i in range(4):
-                # 全反転パターン定義
+                # 全反転パターン定義 詳しくは『並び替えアルゴリズム.xlsx』
                 p = [ i, 3 -j, 3 - i,     j ]
                 q = [ j,    i, 3 - j,  3 -i ]
                 # 7(黒色の場合) 
-                if pyxel.tilemap(0).get(16 + mNextBlockNo * 4 + p[mA], q[mA]) == BLACK_AREA:
+                if pyxel.tilemap(0).get(16 + mNextBlockNo * 4 
+                    + p[mRotaionNo], q[mRotaionNo]) == BLACK_AREA:
                     continue
                 v = mNextBlockNo
                 if isEraseBlock == False:
@@ -156,14 +161,14 @@ class Tetris:
         self.mT = self.mNextBlockNo
         self.mWait = WAIT
 
-        self.mA = 0
+        self.mRotaionNo = 0
         if pyxel.btn(pyxel.KEY_X):
-            self.mA = 3
+            self.mRotaionNo = 3
         if pyxel.btn(pyxel.KEY_Z):
-            self.mA = 1
+            self.mRotaionNo = 1
         
         #次に置くブロックが既におけない場合
-        if self.put(self.mX, self.mY, self.mT, self.mA, True, True) == False:
+        if self.put(self.mX, self.mY, self.mT, self.mRotaionNo, True, True) == False:
             # ゲームオーバー
             self.mGameover = True
         
