@@ -20,7 +20,7 @@ class Tetris:
         self.mX = 0
         # y座標
         self.mY = 0
-        # 回転軸座標（0 ～ 3）
+        # 回転軸Ｎｏ（0 ～ 3）
         self.mRotaionNo = 0
         # 待ち時間
         self.mWait = 0
@@ -88,7 +88,7 @@ class Tetris:
         self.put(self.mX, self.mY, self.mT, self.mRotaionNo, True, True)
     
     # --------------------------------
-    # 関数（?）
+    # 関数（回転軸Ｎｏ取得）
     # --------------------------------
     def getRotaionNo(self):
         mRotaionNo = self.mRotaionNo
