@@ -20,7 +20,7 @@ class Tetris:
         self.mX = 0
         # y座標
         self.mY = 0
-        # 回転軸Ｎｏ（0 ～ 3）
+        # 回転軸No（0 ～ 3）
         self.mRotaionNo = 0
         # 待ち時間
         self.mWait = 0
@@ -38,9 +38,9 @@ class Tetris:
         #実行（update関数 ⇒ draw関数 ⇒ update関数 ⇒ draw関数 ... と永遠とループする）
         pyxel.run(self.update, self.draw)
     
-    # --------------------------------
+    # --------------------------------------------
     # 関数（画面描画）
-    # --------------------------------
+    # --------------------------------------------
     def draw(self):
         # 画面（タイルマップ）
         pyxel.bltm(0, 0, 0, 0, 0, MAP_WIDTH, MAP_HEIGHT)
@@ -48,9 +48,9 @@ class Tetris:
         if self.mGameover: 
             pyxel.text(40, 80, "GAME OVER", 7)
     
-    # --------------------------------
+    # --------------------------------------------
     # 関数（画面更新）
-    # --------------------------------
+    # --------------------------------------------
     def update(self):
         # ゲームオーバー
         if self.mGameover:
@@ -63,8 +63,8 @@ class Tetris:
         # 表示されているブロックを削除
         self.put(self.mX, self.mY, self.mT, self.mRotaionNo, True, True)
         
-        #ここから更新 ↓↓↓
-        # A座標取得(Xボタン、Zボタンで座標が切り替わっている事を考慮)
+        # ここから更新 ↓↓↓
+        # 回転軸No取得(Xボタン、Zボタンで座標が切り替わっている事を考慮)
         mRotaionNo = self.getRotaionNo()
         if self.put(self.mX, self.mY, self.mT, mRotaionNo, False, False):
             # 移動できる場合は、座標をずらす
@@ -87,9 +87,9 @@ class Tetris:
         # 確定した座標で更新
         self.put(self.mX, self.mY, self.mT, self.mRotaionNo, False, True)
     
-    # --------------------------------
+    # --------------------------------------------
     # 関数（回転軸Ｎｏ取得）
-    # --------------------------------
+    # --------------------------------------------
     def getRotaionNo(self):
         mRotaionNo = self.mRotaionNo
         if pyxel.btnp(pyxel.KEY_X):
@@ -108,9 +108,9 @@ class Tetris:
         mRotaionNo &= 3
         return mRotaionNo;
     
-    # --------------------------------
+    # --------------------------------------------
     # 関数（x座標取得）
-    # --------------------------------
+    # --------------------------------------------
     def getMx(self):
         mX = self.mX
         # 左ボタンを押した場合
@@ -121,7 +121,7 @@ class Tetris:
             mX += 1
         return mX;
 
-    # --------------------------------
+    # ----------------------------------------------------------------------
     # 関数（ブロック設定）
     #
     # @param mX X座標
@@ -131,7 +131,7 @@ class Tetris:
     # @param isEraseBlock ブロックを黒に潰す(True:黒固定、False:mNextBlockNoを設定)
     # @param isBlockSet ブロックを画面に設定(True:設定、False:未設定)
     # @return True:ブロック設定可能、False:ブロック設定不可能
-    # --------------------------------
+    # ----------------------------------------------------------------------
     def put(self, mX, mY, mNextBlockNo, mRotaionNo, isEraseBlock, isBlockSet):
         for j in range(4):
             for i in range(4):
@@ -154,34 +154,31 @@ class Tetris:
                     pyxel.tilemap(0).set( mX + i, mY + j, v)
         return True
     
-    # --------------------------------
+    # --------------------------------------------
     # 関数（次ブロック設定）
-    # --------------------------------
+    # --------------------------------------------
     def next(self):
         self.mX = 5
         self.mY = 2
         self.mT = self.mNextBlockNo
         self.mWait = WAIT
-
         self.mRotaionNo = 0
-        if pyxel.btn(pyxel.KEY_X):
-            self.mRotaionNo = 3
-        if pyxel.btn(pyxel.KEY_Z):
-            self.mRotaionNo = 1
         
         #次に置くブロックが既におけない場合
+        #おける場合は、設定もする。
         if self.put(self.mX, self.mY, self.mT, self.mRotaionNo, False, True) == False:
             # ゲームオーバー
             self.mGameover = True
         
+        # 一番上の次ブロックを表示
         self.put(5, -1, self.mNextBlockNo, 0 , True, True)
         self.mNextBlockNo = randint(0, 6)
         self.put(5, -1, self.mNextBlockNo, 0 , False, True)
 
-    # --------------------------------
+    # --------------------------------------------
     # 関数（横一列設定）
     #  横一列が埋まっていた場合は、"10"(横一列complete)を設定する
-    # --------------------------------
+    # --------------------------------------------
     def set_row_line_Complete(self):
         # 上から下まで（22～3までループ）
         for y in range(22, 2, -1):
@@ -196,9 +193,9 @@ class Tetris:
                     # "10"（白）を設定 タイルマップの右下の図の、左から10番目が白
                     pyxel.tilemap(0).set(x, y ,WHITE_BLOCK)
 
-    # --------------------------------
+    # --------------------------------------------
     # 関数（待機処理）
-    # --------------------------------
+    # --------------------------------------------
     def wait(self):
         # mWaitを１減らす
         self.mWait -= 1
