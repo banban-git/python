@@ -61,23 +61,23 @@ class Tetris:
             return
         
         # 表示されているブロックを削除
-        self.put(self.mX, self.mY, self.mT, self.mRotaionNo, False, True)
+        self.put(self.mX, self.mY, self.mT, self.mRotaionNo, True, True)
         
         #ここから更新 ↓↓↓
         # A座標取得(Xボタン、Zボタンで座標が切り替わっている事を考慮)
         mRotaionNo = self.getRotaionNo()
-        if self.put(self.mX, self.mY, self.mT, mRotaionNo, True, False):
+        if self.put(self.mX, self.mY, self.mT, mRotaionNo, False, False):
             # 移動できる場合は、座標をずらす
             self.mRotaionNo = mRotaionNo
 
         # X座標取得(左ボタン、右ボタンで座標が切り替わっている事を考慮)
         x = self.getMx()
-        if self.put(x, self.mY, self.mT, self.mRotaionNo, True, False):
+        if self.put(x, self.mY, self.mT, self.mRotaionNo, False, False):
             # 移動できる場合は、座標をずらす
             self.mX = x
 
         # 一番下にブロックがあるか判定
-        if self.put(x, self.mY + 1, self.mT, self.mRotaionNo, True, False):
+        if self.put(x, self.mY + 1, self.mT, self.mRotaionNo, False, False):
             # 下にない場合は、Y座標を1つ下にさげる
             self.mY += 1
             self.mWait = WAIT
@@ -85,7 +85,7 @@ class Tetris:
             self.mWait -= 1
 
         # 確定した座標で更新
-        self.put(self.mX, self.mY, self.mT, self.mRotaionNo, True, True)
+        self.put(self.mX, self.mY, self.mT, self.mRotaionNo, False, True)
     
     # --------------------------------
     # 関数（回転軸Ｎｏ取得）
@@ -128,8 +128,9 @@ class Tetris:
     # @param mY Y座標
     # @param mNextBlockNo 次ブロックNo
     # @param mA 回転軸ざ行
-    # @param isEraseBlock
+    # @param isEraseBlock ブロックを黒に潰す(True:黒固定、False:mNextBlockNoを設定)
     # @param isBlockSet ブロックを画面に設定(True:設定、False:未設定)
+    # @return True:ブロック設定可能、False:ブロック設定不可能
     # --------------------------------
     def put(self, mX, mY, mNextBlockNo, mRotaionNo, isEraseBlock, isBlockSet):
         for j in range(4):
@@ -141,8 +142,9 @@ class Tetris:
                 if pyxel.tilemap(0).get(16 + mNextBlockNo * 4 
                     + p[mRotaionNo], q[mRotaionNo]) == BLACK_AREA:
                     continue
+                
                 v = mNextBlockNo
-                if isEraseBlock == False:
+                if isEraseBlock:
                     v = BLACK_AREA
                 elif pyxel.tilemap(0).get( mX + i, mY + j) != BLACK_AREA:
                     # 移動後のブロックが7以外（何かしらのブラックがある）場合
@@ -168,13 +170,13 @@ class Tetris:
             self.mRotaionNo = 1
         
         #次に置くブロックが既におけない場合
-        if self.put(self.mX, self.mY, self.mT, self.mRotaionNo, True, True) == False:
+        if self.put(self.mX, self.mY, self.mT, self.mRotaionNo, False, True) == False:
             # ゲームオーバー
             self.mGameover = True
         
-        self.put(5, -1, self.mNextBlockNo, 0 , False, True)
-        self.mNextBlockNo = randint(0, 6)
         self.put(5, -1, self.mNextBlockNo, 0 , True, True)
+        self.mNextBlockNo = randint(0, 6)
+        self.put(5, -1, self.mNextBlockNo, 0 , False, True)
 
     # --------------------------------
     # 関数（横一列設定）
