@@ -61,13 +61,16 @@ class Tetris:
         
         self.put(self.mX, self.mY, self.mT, self.mA, False, True)
         
-        # A座標取得(Ｘボタン、Ｚボタンで座標が切り替わっている事を考慮)
+        # A座標取得(Xボタン、Zボタンで座標が切り替わっている事を考慮)
         a = self.getMa()
         if self.put(self.mX, self.mY, self.mT, a, True, False):
+            # 移動できる場合は、座標をずらす
             self.mA = a
+
         # X座標取得(左ボタン、右ボタンで座標が切り替わっている事を考慮)
         x = self.getMx()
         if self.put(x, self.mY, self.mT, self.mA, True, False):
+            # 移動できる場合は、座標をずらす
             self.mX = x
         
         # 一番下にブロックがあるか判定
@@ -78,6 +81,7 @@ class Tetris:
         else:
             self.mWait -= 1
 
+        # 描画
         self.put(self.mX, self.mY, self.mT, self.mA, True, True)
     
     # --------------------------------
