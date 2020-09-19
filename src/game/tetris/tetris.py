@@ -28,6 +28,7 @@ class Tetris:
         self.mWait = 0
         # スコア
         self.score = 0
+        self.scene = 0
 
         # 初期設定
         pyxel.init(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, scale=3, fps=10)
@@ -36,9 +37,9 @@ class Tetris:
 
         # テトリス音楽 再生
         pyxel.playm(0, loop=True)
-
-        self.next()
         
+        self.next()
+
         #実行（update関数 ⇒ draw関数 ⇒ update関数 ⇒ draw関数 ... と永遠とループする）
         pyxel.run(self.update, self.draw)
     
@@ -46,6 +47,23 @@ class Tetris:
     # 関数（画面描画）
     # --------------------------------------------
     def draw(self):
+        pyxel.cls(0)
+        if self.scene == 0 :
+            # 矩形を描画
+            pyxel.text(32, 66, "Pyxel TETRIS", pyxel.frame_count % 16)
+            pyxel.text(26, 96, "- PRESS ENTER -", 13)
+        else:
+            self.main_draw()
+    # --------------------------------------------
+    # 関数（画面更新）
+    # --------------------------------------------
+    def update(self):
+        if pyxel.btnp(pyxel.KEY_ENTER):
+            self.scene = 1
+        if self.scene == 1 :
+            self.main_update()
+
+    def main_draw(self):
         # 画面（タイルマップ）
         pyxel.bltm(0, 0, 0, 0, 0, MAP_WIDTH, MAP_HEIGHT)
         # GAME OVER
@@ -56,10 +74,7 @@ class Tetris:
         pyxel.text(1, 2, "SCORE:", 7)
         pyxel.text(15, 9, format(self.score), 7)
 
-    # --------------------------------------------
-    # 関数（画面更新）
-    # --------------------------------------------
-    def update(self):
+    def main_update(self):
         # ゲームオーバー
         if self.mGameover:
             return
