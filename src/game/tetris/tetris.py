@@ -180,16 +180,15 @@ class Tetris:
     #  横一列が埋まっていた場合は、"10"(横一列complete)を設定する
     # --------------------------------------------
     def set_row_line_Complete(self):
-        # 上から下まで（22～3までループ）
-        for y in range(22, 2, -1):
+        for y in self.get_All_col_range():
             n = 0
             # 横一列ループ
-            for x in range(2, 12):
-                if pyxel.tilemap(0).get(x, y) < 7:
+            for x in self.get_rows_range():
+                if pyxel.tilemap(0).get(x, y) < BLACK_AREA:
                     n += 1
             # 横一列全て埋まった場合
             if n == 10:
-                for x in range(2, 12):
+                for x in self.get_rows_range():
                     # "10"（白）を設定 タイルマップの右下の図の、左から10番目が白
                     pyxel.tilemap(0).set(x, y ,WHITE_BLOCK)
 
@@ -212,8 +211,7 @@ class Tetris:
         
         # 最終回（wait関数が呼ばれた、最後の回）の場合
         if self.mWait == 1:
-            # 上から下まで（22～3までループ）
-            for y in range(22, 2, -1):
+            for y in self.get_All_col_range():
                 # 横一列が全てうまっていた場合
                 while pyxel.tilemap(0).get(2, y) == WHITE_BLOCK:
                     
@@ -223,11 +221,23 @@ class Tetris:
 
                     # ブロック消去
                     for i in range(y, 3, -1):
-                        for x in range(2 ,12):
+                        #上の段のものと入れ替える
+                        for x in self.get_rows_range():
                             pyxel.tilemap(0).set(x, i, pyxel.tilemap(0).get(x, i -1))
-                    for x in range(2, 12):
-                        pyxel.tilemap(0).set(x, 3, 7)
+                    for x in self.get_rows_range():
+                        pyxel.tilemap(0).set(x, 3, BLACK_AREA)
     
+    # --------------------------------------------
+    # 関数（1行の範囲取得）
+    # --------------------------------------------
+    def get_rows_range(self):
+        return range(2 ,12)
+    # --------------------------------------------
+    # 関数（1列の範囲取得）
+    # --------------------------------------------
+    def get_All_col_range(self):
+        #下から上まで（22～3まで）
+        return range(22, 2, -1)
 
 #テトリス起動
 Tetris()
