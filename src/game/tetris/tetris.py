@@ -9,6 +9,8 @@ MAP_HEIGHT = 25   # 画面縦サイズ
 WAIT = 12         # 待ち時間
 BLACK_AREA = 7    #（黒）タイルマップの右下の図の、左から7番目が黒
 WHITE_BLOCK = 10  #（白）タイルマップの右下の図の、左から10番目が白
+SCORE_ROW_LINE_COMPLETE = 1000 #1行けした時の、ポイント
+SCORE_BLOCK_PUT = 10 #ブロックをおいた時の、ポイント
 
 class Tetris:
     # コンストラクタ
@@ -24,6 +26,8 @@ class Tetris:
         self.mRotaionNo = 0
         # 待ち時間
         self.mWait = 0
+        # スコア
+        self.score = 0
 
         # 初期設定
         pyxel.init(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, scale=3, fps=10)
@@ -47,7 +51,11 @@ class Tetris:
         # GAME OVER
         if self.mGameover: 
             pyxel.text(40, 80, "GAME OVER", 7)
-    
+        
+        # draw score
+        pyxel.text(1, 2, "Score:", 7)
+        pyxel.text(15, 9, format(self.score), 7)
+
     # --------------------------------------------
     # 関数（画面更新）
     # --------------------------------------------
@@ -211,10 +219,11 @@ class Tetris:
         
         # 最終回（wait関数が呼ばれた、最後の回）の場合
         if self.mWait == 1:
+            self.score += SCORE_BLOCK_PUT
             for y in self.get_All_col_range():
                 # 横一列が全てうまっていた場合
                 while pyxel.tilemap(0).get(2, y) == WHITE_BLOCK:
-                    
+                    self.score += SCORE_ROW_LINE_COMPLETE
                     # 効果音再生
                     pyxel.play(2, 12)
                     self.mWait = WAIT / 2 -2
