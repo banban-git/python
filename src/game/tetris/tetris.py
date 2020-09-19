@@ -63,6 +63,7 @@ class Tetris:
         # 表示されているブロックを削除
         self.put(self.mX, self.mY, self.mT, self.mA, False, True)
         
+        #ここから再描画 ↓↓↓
         # A座標取得(Xボタン、Zボタンで座標が切り替わっている事を考慮)
         a = self.getMa()
         if self.put(self.mX, self.mY, self.mT, a, True, False):
