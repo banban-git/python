@@ -32,17 +32,15 @@ class Tetris:
         self.score = 0
         # シーン
         self.scene = SCENE_TITLE
+        # テトリス音楽 再生
+        self.musicStart = True
 
         # 初期設定
         pyxel.init(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, scale=3, fps=10)
         # 設定ファイル（コマンドで参照可 → pyxeleditor tetris.pyxres)
         pyxel.load("tetris.pyxres")
 
-        # テトリス音楽 再生
-        pyxel.playm(0, loop=True)
-        
         self.next()
-
         #実行（update関数 ⇒ draw関数 ⇒ update関数 ⇒ draw関数 ... と永遠とループする）
         pyxel.run(self.update, self.draw)
     
@@ -52,11 +50,29 @@ class Tetris:
     def draw(self):
         pyxel.cls(0)
         if self.scene == SCENE_TITLE :
-            # 矩形を描画
-            pyxel.text(32, 66, "Pyxel TETRIS", pyxel.frame_count % 16)
-            pyxel.text(26, 96, "- PRESS ENTER -", 13)
+            # タイトル描画
+            self.title_draw()
         else:
-            self.main_draw()
+            # メインゲーム描画
+            self.main_game_draw()
+    def title_draw(self):
+        pyxel.text(32, 66, "Pyxel TETRIS", pyxel.frame_count % 16)
+        pyxel.text(26, 96, "- PRESS ENTER -", 13)
+    def main_game_draw(self):
+        # 画面（タイルマップ）
+        pyxel.bltm(0, 0, 0, 0, 0, MAP_WIDTH, MAP_HEIGHT)
+        # テトリス音楽 再生
+        if (self.musicStart):
+            pyxel.playm(0, loop=True)
+            # 1回だけ再生
+            self.musicStart = False
+        # GAME OVER
+        if self.mGameover: 
+            pyxel.text(40, 80, "GAME OVER", 7)
+        # draw score
+        pyxel.text(1, 2, "SCORE:", 7)
+        pyxel.text(15, 9, format(self.score), 7)
+
     # --------------------------------------------
     # 関数（画面更新）
     # --------------------------------------------
@@ -65,18 +81,6 @@ class Tetris:
             self.scene = SCENE_MAIN_GAME
         if self.scene == SCENE_MAIN_GAME :
             self.main_update()
-
-    def main_draw(self):
-        # 画面（タイルマップ）
-        pyxel.bltm(0, 0, 0, 0, 0, MAP_WIDTH, MAP_HEIGHT)
-        # GAME OVER
-        if self.mGameover: 
-            pyxel.text(40, 80, "GAME OVER", 7)
-        
-        # draw score
-        pyxel.text(1, 2, "SCORE:", 7)
-        pyxel.text(15, 9, format(self.score), 7)
-
     def main_update(self):
         # ゲームオーバー
         if self.mGameover:
@@ -125,12 +129,12 @@ class Tetris:
             pyxel.play(2, 11)
             mRotaionNo += 1
         # 回転
-        # mRotaionNo = 0 の場合 0
-        # mRotaionNo = 1 の場合 1
-        # mRotaionNo = 2 の場合 2
-        # mRotaionNo = 3 の場合 3
-        # mRotaionNo = 4 の場合 0
-        # mRotaionNo = -1 の場合 3
+        # mRotaionNo = 0 の場合 0 (0度)
+        # mRotaionNo = 1 の場合 1 (90度回転)
+        # mRotaionNo = 2 の場合 2 (180度回転)
+        # mRotaionNo = 3 の場合 3 (270度回転)
+        # mRotaionNo = 4 の場合 0 (360度回転)
+        # mRotaionNo = -1 の場合 3 (-90度回転)
         mRotaionNo &= 3
         return mRotaionNo;
     
