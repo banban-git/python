@@ -48,7 +48,6 @@ class Tetris:
     # 関数（画面描画）
     # --------------------------------------------
     def draw(self):
-        pyxel.cls(0)
         if self.scene == SCENE_TITLE :
             # タイトル描画
             self.title_draw()
@@ -56,6 +55,7 @@ class Tetris:
             # メインゲーム描画
             self.main_game_draw()
     def title_draw(self):
+        pyxel.cls(1)
         pyxel.text(32, 66, "Pyxel TETRIS", pyxel.frame_count % 16)
         pyxel.text(26, 96, "- PRESS ENTER -", 13)
     def main_game_draw(self):
