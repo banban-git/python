@@ -55,7 +55,7 @@ class Tetris:
             # メインゲーム描画
             self.main_game_draw()
     def title_draw(self):
-        pyxel.cls(1)
+        pyxel.cls(0)
         pyxel.text(32, 66, "Pyxel TETRIS", pyxel.frame_count % 16)
         pyxel.text(26, 96, "- PRESS ENTER -", 13)
     def main_game_draw(self):
@@ -157,7 +157,7 @@ class Tetris:
     # @param mX X座標
     # @param mY Y座標
     # @param mNextBlockNo 次ブロックNo
-    # @param mA 回転軸ざ行
+    # @param mRotaionNo 回転軸No
     # @param isEraseBlock ブロックを黒に潰す(True:黒固定、False:mNextBlockNoを設定)
     # @param isBlockSet ブロックを画面に設定(True:設定、False:未設定)
     # @return True:ブロック設定可能、False:ブロック設定不可能

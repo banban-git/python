@@ -48,7 +48,7 @@ pip install google_images_download
 pip install tensorflow==1.14
 pip install numpy==1.16.4
 pip install -U pyxel
-pip install pyinstaller
+pip install Flask
 ```
 # ■機械学習
 作業フォルダ

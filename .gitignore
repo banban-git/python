@@ -5,6 +5,7 @@ src/machine_learning/training_summaries/
 src/machine_learning/retrained_graph.pb
 src/machine_learning/retrained_labels.txt
 src/machine_learning/bottlenecks/
+src/flask/__pycache__/
 
 # Ignore Gradle build output directory
 
