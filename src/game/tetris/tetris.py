@@ -6,7 +6,7 @@ import time
 TILE_SIZE = 8     # タイルサイズ
 MAP_WIDTH = 14    # 画面横サイズ
 MAP_HEIGHT = 25   # 画面縦サイズ
-WAIT = 12         # 待ち時間
+WAIT = 10         # 待ち時間
 BLACK_AREA = 7    #（黒）タイルマップの右下の図の、左から7番目が黒
 WHITE_BLOCK = 10  #（白）タイルマップの右下の図の、左から10番目が白
 SCORE_ROW_LINE_COMPLETE = 1000 #1行けした時の、ポイント
@@ -105,6 +105,9 @@ class Tetris:
         if self.put(x, self.mY, self.mT, self.mRotaionNo, False, False):
             # 移動できる場合は、座標をずらす
             self.mX = x
+        
+        # 一番したに落下を考慮
+        self.mY = self.getMostMy()
 
         # 一番下にブロックがあるか判定
         if self.put(x, self.mY + 1, self.mT, self.mRotaionNo, False, False):
@@ -150,6 +153,19 @@ class Tetris:
         if pyxel.btnp(pyxel.KEY_RIGHT, 20, 1):
             mX += 1
         return mX;
+    
+    # --------------------------------------------
+    # 関数（一番したに落下）
+    # --------------------------------------------
+    def getMostMy(self):
+        mY = self.mY
+        # Aボタンを押した場合
+        if pyxel.btnp(pyxel.KEY_A):
+            # 一番したまで座標を移す
+            while (self.put(self.mX, mY, self.mT, self.mRotaionNo, False, False)):
+                mY += 1
+            mY -= 1
+        return mY;
 
     # ----------------------------------------------------------------------
     # 関数（ブロック設定）

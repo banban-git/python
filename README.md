@@ -49,6 +49,8 @@ pip install tensorflow==1.14
 pip install numpy==1.16.4
 pip install -U pyxel
 pip install Flask
+pip install dill
+pip install janome
 ```
 # ■機械学習
 作業フォルダ
