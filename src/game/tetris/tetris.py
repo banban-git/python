@@ -1,18 +1,18 @@
 from random import randint
 import pyxel
-import time
 
-#固定値
+# 固定値
 TILE_SIZE = 8     # タイルサイズ
 MAP_WIDTH = 14    # 画面横サイズ
 MAP_HEIGHT = 25   # 画面縦サイズ
 WAIT = 10         # 待ち時間
-BLACK_AREA = 7    #（黒）タイルマップの右下の図の、左から7番目が黒
-WHITE_BLOCK = 10  #（白）タイルマップの右下の図の、左から10番目が白
-SCORE_ROW_LINE_COMPLETE = 1000 #1行けした時の、ポイント
-SCORE_BLOCK_PUT = 10 #ブロックをおいた時の、ポイント
-SCENE_TITLE = 0      #タイトル画面
-SCENE_MAIN_GAME = 1  #メイン画面
+BLACK_AREA = 7    # （黒）タイルマップの右下の図の、左から7番目が黒
+WHITE_BLOCK = 10  # （白）タイルマップの右下の図の、左から10番目が白
+SCORE_ROW_LINE_COMPLETE = 1000  # 1行けした時の、ポイント
+SCORE_BLOCK_PUT = 10  # ブロックをおいた時の、ポイント
+SCENE_TITLE = 0      # タイトル画面
+SCENE_MAIN_GAME = 1  # メイン画面
+
 
 class Tetris:
     # コンストラクタ
@@ -41,28 +41,30 @@ class Tetris:
         pyxel.load("tetris.pyxres")
 
         self.next()
-        #実行（update関数 ⇒ draw関数 ⇒ update関数 ⇒ draw関数 ... と永遠とループする）
+        # 実行（update関数 ⇒ draw関数 ⇒ update関数 ⇒ draw関数 ... と永遠とループする）
         pyxel.run(self.update, self.draw)
     
     # --------------------------------------------
     # 関数（画面描画）
     # --------------------------------------------
     def draw(self):
-        if self.scene == SCENE_TITLE :
+        if self.scene == SCENE_TITLE:
             # タイトル描画
             self.title_draw()
         else:
             # メインゲーム描画
             self.main_game_draw()
+
     def title_draw(self):
         pyxel.cls(0)
         pyxel.text(32, 66, "Pyxel TETRIS", pyxel.frame_count % 16)
         pyxel.text(26, 96, "- PRESS ENTER -", 13)
+
     def main_game_draw(self):
         # 画面（タイルマップ）
         pyxel.bltm(0, 0, 0, 0, 0, MAP_WIDTH, MAP_HEIGHT)
         # テトリス音楽 再生
-        if (self.musicStart):
+        if self.musicStart:
             pyxel.playm(0, loop=True)
             # 1回だけ再生
             self.musicStart = False
@@ -79,8 +81,9 @@ class Tetris:
     def update(self):
         if pyxel.btnp(pyxel.KEY_ENTER):
             self.scene = SCENE_MAIN_GAME
-        if self.scene == SCENE_MAIN_GAME :
+        if self.scene == SCENE_MAIN_GAME:
             self.main_update()
+
     def main_update(self):
         # ゲームオーバー
         if self.mGameover:
@@ -139,7 +142,7 @@ class Tetris:
         # mRotaionNo = 4 の場合 0 (360度回転)
         # mRotaionNo = -1 の場合 3 (-90度回転)
         mRotaionNo &= 3
-        return mRotaionNo;
+        return mRotaionNo
     
     # --------------------------------------------
     # 関数（x座標取得）
@@ -152,7 +155,7 @@ class Tetris:
         # 右ボタンを押した場合
         if pyxel.btnp(pyxel.KEY_RIGHT, 20, 1):
             mX += 1
-        return mX;
+        return mX
     
     # --------------------------------------------
     # 関数（一番したに落下）
@@ -162,10 +165,10 @@ class Tetris:
         # Aボタンを押した場合
         if pyxel.btnp(pyxel.KEY_A):
             # 一番したまで座標を移す
-            while (self.put(self.mX, mY, self.mT, self.mRotaionNo, False, False)):
+            while self.put(self.mX, mY, self.mT, self.mRotaionNo, False, False):
                 mY += 1
             mY -= 1
-        return mY;
+        return mY
 
     # ----------------------------------------------------------------------
     # 関数（ブロック設定）
@@ -182,22 +185,21 @@ class Tetris:
         for j in range(4):
             for i in range(4):
                 # 全反転パターン定義 詳しくは『並び替えアルゴリズム.xlsx』
-                p = [ i, 3 -j, 3 - i,     j ]
-                q = [ j,    i, 3 - j,  3 -i ]
+                p = [i, 3 - j, 3 - i,      j]
+                q = [j,     i, 3 - j,  3 - i]
                 # 7(黒色の場合) 
-                if pyxel.tilemap(0).get(16 + mNextBlockNo * 4 
-                    + p[mRotaionNo], q[mRotaionNo]) == BLACK_AREA:
+                if pyxel.tilemap(0).get(16 + mNextBlockNo * 4 + p[mRotaionNo], q[mRotaionNo]) == BLACK_AREA:
                     continue
                 
                 v = mNextBlockNo
                 if isEraseBlock:
                     v = BLACK_AREA
-                elif pyxel.tilemap(0).get( mX + i, mY + j) != BLACK_AREA:
+                elif pyxel.tilemap(0).get(mX + i, mY + j) != BLACK_AREA:
                     # 移動後のブロックが7以外（何かしらのブラックがある）場合
-                    return False;
+                    return False
                 
                 if isBlockSet:
-                    pyxel.tilemap(0).set( mX + i, mY + j, v)
+                    pyxel.tilemap(0).set(mX + i, mY + j, v)
         return True
     
     # --------------------------------------------
@@ -210,16 +212,16 @@ class Tetris:
         self.mWait = WAIT
         self.mRotaionNo = 0
         
-        #次に置くブロックが既におけない場合
-        #おける場合は、設定もする。
-        if self.put(self.mX, self.mY, self.mT, self.mRotaionNo, False, True) == False:
+        # 次に置くブロックが既におけない場合
+        # おける場合は、設定もする。
+        if not self.put(self.mX, self.mY, self.mT, self.mRotaionNo, False, True):
             # ゲームオーバー
             self.mGameover = True
         
         # 一番上の次ブロックを表示
-        self.put(5, -1, self.mNextBlockNo, 0 , True, True)
+        self.put(5, -1, self.mNextBlockNo, 0, True, True)
         self.mNextBlockNo = randint(0, 6)
-        self.put(5, -1, self.mNextBlockNo, 0 , False, True)
+        self.put(5, -1, self.mNextBlockNo, 0, False, True)
 
     # --------------------------------------------
     # 関数（横一列設定）
@@ -236,7 +238,7 @@ class Tetris:
             if n == 10:
                 for x in self.get_rows_range():
                     # "10"（白）を設定 タイルマップの右下の図の、左から10番目が白
-                    pyxel.tilemap(0).set(x, y ,WHITE_BLOCK)
+                    pyxel.tilemap(0).set(x, y, WHITE_BLOCK)
 
     # --------------------------------------------
     # 関数（待機処理）
@@ -264,13 +266,13 @@ class Tetris:
                     self.score += SCORE_ROW_LINE_COMPLETE
                     # 効果音再生
                     pyxel.play(2, 12)
-                    self.mWait = WAIT / 2 -2
+                    self.mWait = WAIT / 2 - 2
 
                     # ブロック消去
                     for i in range(y, 3, -1):
-                        #上の段のものと入れ替える
+                        # 上の段のものと入れ替える
                         for x in self.get_rows_range():
-                            pyxel.tilemap(0).set(x, i, pyxel.tilemap(0).get(x, i -1))
+                            pyxel.tilemap(0).set(x, i, pyxel.tilemap(0).get(x, i - 1))
                     for x in self.get_rows_range():
                         pyxel.tilemap(0).set(x, 3, BLACK_AREA)
     
@@ -278,13 +280,15 @@ class Tetris:
     # 関数（1行の範囲取得）
     # --------------------------------------------
     def get_rows_range(self):
-        return range(2 ,12)
+        return range(2, 12)
+
     # --------------------------------------------
     # 関数（1列の範囲取得）
     # --------------------------------------------
     def get_All_col_range(self):
-        #下から上まで（22～3まで）
+        # 下から上まで（22～3まで）
         return range(22, 2, -1)
 
-#テトリス起動
+
+# テトリス起動
 Tetris()
