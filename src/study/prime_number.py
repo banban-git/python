@@ -1,4 +1,4 @@
-#素数表示（https://spjai.com/python-tutorial/#7-4）
+# 素数表示（https://spjai.com/python-tutorial/#7-4）
 prime_list = []
 for i in range(2,1000):
     is_prime = True
