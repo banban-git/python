@@ -26,9 +26,9 @@ if path_tesseract not in os.environ["PATH"].split(os.pathsep):
 tools = pyocr.get_available_tools()
 tool = tools[0]
 
-# ---------------------
+# -------------
 # メイン関数
-# ---------------------
+# -------------
 def main():
     #ゲームスタート
     time.sleep(3)
@@ -62,19 +62,20 @@ def main():
         # 前回のファイルとして画像保存
         cv2.imwrite(PREVIOUS_IMAGE_SUSHIDA_FILE, tmp)
 
-# --------------------------------------
+# -------------------------------------------
 # 寿司打入力エラー
 # @return true:エラーあり、false:エラーなし
-# --------------------------------------
+# -------------------------------------------
 def is_sushida_input_error():
     # 前回の画像と比較して、同じ画像（ハッシュ値）の場合はtrueを返却する。
     hash1= imagehash.average_hash(Image.open("C:/work/python/" + NOW_IMAGE_SUSHIDA_FILE))
     hash2 = imagehash.average_hash(Image.open("C:/work/python/" + PREVIOUS_IMAGE_SUSHIDA_FILE))
     return hash1 == hash2
 
-# ---------------------
+# -------------------------------------------
 # 入力文字取得
-# ---------------------
+# @return　寿司打でタイピングするときの文字
+# -------------------------------------------
 def get_sushida_moji(imgFileDir):
     # 画像読み込み
     img_org = Image.open(imgFileDir)
@@ -89,7 +90,7 @@ def get_sushida_moji(imgFileDir):
     return sushidaMoji
 
 # ---------------------
-# メイン関数
+# メイン関数呼出し
 # ---------------------
 if __name__ == "__main__":
     main()
