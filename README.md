@@ -51,6 +51,11 @@ pip install -U pyxel
 pip install Flask
 pip install dill
 pip install janome
+pip install opencv-python
+pip install pyocr
+pip install ImageHash
+
+https://gammasoft.jp/blog/tesseract-ocr-install-on-windows/
 ```
 # ■機械学習
 作業フォルダ

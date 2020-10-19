@@ -9,8 +9,15 @@ import cv2
 import re
 import imagehash
 
+# 寿司打 http://typingx0.net/sushida/play.html
+
+# 現在のイメージファイル
+NOW_IMAGE_SUSHIDA_FILE= "now_SushidaPicture.jpg"
+# 前回のイメージファイル
+PREVIOUS_IMAGE_SUSHIDA_FILE= "previous_SushidaPicture.jpg"
+
 #環境設定
-TESSERACT_PATH= "C:\\Program Files\\Tesseract-OCR"
+TESSERACT_PATH= "C:\\Program Files\\Tesseract-OCRetu"
 # 1.インストール済みのTesseractのパスを通す
 path_tesseract = TESSERACT_PATH
 if path_tesseract not in os.environ["PATH"].split(os.pathsep):
@@ -31,27 +38,27 @@ def main():
 
     while True:
         sc = pyautogui.screenshot(region=(500, 460, 340, 25))
-        sc.save('SushidaPicture.jpg')
-        img = cv2.imread('SushidaPicture.jpg')
+        sc.save(NOW_IMAGE_SUSHIDA_FILE)
+        img = cv2.imread(NOW_IMAGE_SUSHIDA_FILE)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         tmp = cv2.resize(gray, (gray.shape[1]*2, gray.shape[0]*2), interpolation=cv2.INTER_LINEAR)
-        cv2.imwrite('SushidaPicture.jpg', tmp)
+        cv2.imwrite(NOW_IMAGE_SUSHIDA_FILE, tmp)
         if isFirst:
-            cv2.imwrite('SushidaPicture2.jpg', tmp)
+            cv2.imwrite(PREVIOUS_IMAGE_SUSHIDA_FILE, tmp)
             isFirst = False
         
         # 入力文字取得
-        sushidaMoji = get_sushida_moji("C:/work/python/SushidaPicture.jpg")
+        sushidaMoji = get_sushida_moji("C:/work/python/" + NOW_IMAGE_SUSHIDA_FILE)
         # エラーの場合
         if is_sushida_input_error():
             # 再度読み込み
-            sushidaMoji = get_sushida_moji("C:/work/python/SushidaPicture2.jpg")
+            sushidaMoji = get_sushida_moji("C:/work/python/" + PREVIOUS_IMAGE_SUSHIDA_FILE)
             
         # 文字入力
         print(sushidaMoji)
         pyautogui.write(sushidaMoji, interval=0.00000001)
         # 文字入力
-        cv2.imwrite('SushidaPicture2.jpg', tmp)
+        cv2.imwrite(PREVIOUS_IMAGE_SUSHIDA_FILE, tmp)
 
 # --------------------------------------
 # 寿司打入力エラー
@@ -59,8 +66,8 @@ def main():
 # --------------------------------------
 def is_sushida_input_error():
     # 前回の画像と比較して、同じ画像（ハッシュ値）の場合はtrueを返却する。
-    hash1= imagehash.average_hash(Image.open("C:/work/python/SushidaPicture.jpg"))
-    hash2 = imagehash.average_hash(Image.open("C:/work/python/SushidaPicture2.jpg"))
+    hash1= imagehash.average_hash(Image.open("C:/work/python/" + NOW_IMAGE_SUSHIDA_FILE))
+    hash2 = imagehash.average_hash(Image.open("C:/work/python/" + PREVIOUS_IMAGE_SUSHIDA_FILE))
     return hash1 == hash2
 
 # ---------------------
