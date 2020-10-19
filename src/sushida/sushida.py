@@ -40,7 +40,7 @@ def main():
         # 寿司打のローマ字の部分のみをスクリーンショットとして取得
         sc = pyautogui.screenshot(region=(500, 460, 340, 25))
         sc.save(NOW_IMAGE_SUSHIDA_FILE)
-        # イメージの灰色にして読み取りしやすいように２倍にする
+        # 画像イメージを灰色にして読み取りしやすいように２倍にする
         img = cv2.imread(NOW_IMAGE_SUSHIDA_FILE)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         tmp = cv2.resize(gray, (gray.shape[1]*2, gray.shape[0]*2), interpolation=cv2.INTER_LINEAR)
