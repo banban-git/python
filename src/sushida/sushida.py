@@ -30,18 +30,21 @@ tool = tools[0]
 # メイン関数
 # ---------------------
 def main():
-    time.sleep(3)
     #ゲームスタート
+    time.sleep(3)
     pyautogui.press('enter')
     time.sleep(2)
     isFirst = True
 
     while True:
+        # 寿司打のローマ字の部分ののみスクリーンショットをとる
         sc = pyautogui.screenshot(region=(500, 460, 340, 25))
         sc.save(NOW_IMAGE_SUSHIDA_FILE)
+        # イメージの灰色にして読み取りしやすいように２倍にする
         img = cv2.imread(NOW_IMAGE_SUSHIDA_FILE)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         tmp = cv2.resize(gray, (gray.shape[1]*2, gray.shape[0]*2), interpolation=cv2.INTER_LINEAR)
+        # 再書き込み
         cv2.imwrite(NOW_IMAGE_SUSHIDA_FILE, tmp)
         if isFirst:
             cv2.imwrite(PREVIOUS_IMAGE_SUSHIDA_FILE, tmp)
