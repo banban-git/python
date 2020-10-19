@@ -37,7 +37,7 @@ def main():
     isFirst = True
 
     while True:
-        # 寿司打のローマ字の部分ののみスクリーンショットをとる
+        # 寿司打のローマ字の部分のみをスクリーンショットとして取得
         sc = pyautogui.screenshot(region=(500, 460, 340, 25))
         sc.save(NOW_IMAGE_SUSHIDA_FILE)
         # イメージの灰色にして読み取りしやすいように２倍にする
