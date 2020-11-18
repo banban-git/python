@@ -36,7 +36,7 @@ class Tetris:
         self.musicStart = True
 
         # 初期設定
-        pyxel.init(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, scale=3, fps=10)
+        pyxel.init(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE, scale=3, fps=11)
         # 設定ファイル（コマンドで参照可 → pyxeleditor tetris.pyxres)
         pyxel.load("tetris.pyxres")
 
