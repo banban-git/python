@@ -78,7 +78,7 @@ python retrain.py --bottleneck_dir=bottlenecks --how_many_training_steps=100 --m
 ## ・実行
 判別したい画像⇒ 『hanbetu1.jpg』
 ``` 
-python label_image.py --graph=retrained_graph.pb --labels=retrained_labels.txt --output_layer=final_result --image=images_test/hanbetu1.jpg --input_layer=Placeholder
+python label_image.py --graph=retrained_graph.pb --labels=retrained_labels.txt --output_layer=final_result --image=images_test/hanbetu6.jpg --input_layer=Placeholder
 ```
 
 
