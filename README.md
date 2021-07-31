@@ -66,7 +66,7 @@ https://gammasoft.jp/blog/tesseract-ocr-install-on-windows/
 JPEGファイルを  
 指定文字列『検索文字』で100件取得します。
 ```
-python bing_scraper.py --search '炭治郎' --format 'jpg' --limit 20 --download --chromedriver chromedriver
+python bing_scraper.py --search '炭治郎' --format 'jpg' --limit 20 --download --chromedriver chromedriver/chromedriver.exe
 ```
 
 ## ・画像解析

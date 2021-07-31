@@ -58,7 +58,7 @@ def main():
             sushidaMoji = get_sushida_moji("C:/work/python/" + PREVIOUS_IMAGE_SUSHIDA_FILE)
             
         # 文字入力
-        pyautogui.write(sushidaMoji, interval=0.00000001)
+        pyautogui.write(sushidaMoji, interval=0.001)
         # 前回のファイルとして画像保存
         cv2.imwrite(PREVIOUS_IMAGE_SUSHIDA_FILE, tmp)
 
