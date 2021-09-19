@@ -1,4 +1,5 @@
 # ocr_card.py
+
 import pyautogui
 import time
 import os
@@ -9,7 +10,8 @@ import cv2
 import re
 import imagehash
 
-# 寿司打 http://typingx0.net/sushida/play.html
+# 寿司打 
+# http://typingx0.net/sushida/play.html
 
 # 現在のイメージファイル
 NOW_IMAGE_SUSHIDA_FILE= "now_SushidaPicture.jpg"
@@ -35,10 +37,17 @@ def main():
     pyautogui.press('enter')
     time.sleep(2)
     isFirst = True
+    
+    screenX = 510;
+    screenY = 460;
+    screenwidth = 340;
+    screenheigth = 25;
+
 
     while True:
+       
         # 寿司打のローマ字の部分のみをスクリーンショットとして取得
-        sc = pyautogui.screenshot(region=(500, 460, 340, 25))
+        sc = pyautogui.screenshot(region=(screenX, screenY, screenwidth, screenheigth))
         sc.save(NOW_IMAGE_SUSHIDA_FILE)
         # 画像イメージを灰色にして読み取りしやすいように２倍にする
         img = cv2.imread(NOW_IMAGE_SUSHIDA_FILE)
@@ -48,29 +57,26 @@ def main():
         cv2.imwrite(NOW_IMAGE_SUSHIDA_FILE, tmp)
         if isFirst:
             cv2.imwrite(PREVIOUS_IMAGE_SUSHIDA_FILE, tmp)
-            isFirst = False
         
         # 入力文字取得
         sushidaMoji = get_sushida_moji("C:/work/python/" + NOW_IMAGE_SUSHIDA_FILE)
+        prevSushidaMoji = get_sushida_moji("C:/work/python/" + PREVIOUS_IMAGE_SUSHIDA_FILE)
         # エラーの場合
-        if is_sushida_input_error():
-            # 再度読み込み
-            sushidaMoji = get_sushida_moji("C:/work/python/" + PREVIOUS_IMAGE_SUSHIDA_FILE)
-            
+        if isFirst == False and sushidaMoji == prevSushidaMoji:
+            screenX = screenX + 10;
+            screenwidth = screenwidth - 5;
+            continue;
+                   
         # 文字入力
-        pyautogui.write(sushidaMoji, interval=0.001)
+        pyautogui.write(sushidaMoji, interval=0)
         # 前回のファイルとして画像保存
         cv2.imwrite(PREVIOUS_IMAGE_SUSHIDA_FILE, tmp)
 
-# -------------------------------------------
-# 寿司打入力エラー
-# @return true:エラーあり、false:エラーなし
-# -------------------------------------------
-def is_sushida_input_error():
-    # 前回の画像と比較して、同じ画像（ハッシュ値）の場合はtrueを返却する。
-    hash1= imagehash.average_hash(Image.open("C:/work/python/" + NOW_IMAGE_SUSHIDA_FILE))
-    hash2 = imagehash.average_hash(Image.open("C:/work/python/" + PREVIOUS_IMAGE_SUSHIDA_FILE))
-    return hash1 == hash2
+        screenX = 510;
+        screenY = 460;
+        screenwidth = 340;
+        screenheigth = 25;
+        isFirst = False
 
 # -------------------------------------------
 # 入力文字取得
