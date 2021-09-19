@@ -10,7 +10,7 @@ import cv2
 import re
 import imagehash
 
-# 寿司打 
+# 寿司打
 # http://typingx0.net/sushida/play.html
 
 # 現在のイメージファイル
