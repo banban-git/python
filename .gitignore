@@ -7,6 +7,8 @@ src/machine_learning/retrained_labels.txt
 src/machine_learning/bottlenecks/
 src/flask/__pycache__/
 .idea/
+now_SushidaPicture.jpg
+previous_SushidaPicture.jpg
 
 # Ignore Gradle build output directory
 
