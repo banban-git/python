@@ -31,32 +31,15 @@ git clone https://github.com/banban-git/python.git
 
 
 # ライブラリインストール
-コマンドを全て実行し、ライブラリをインストールする。
+コマンドを実行し、ライブラリをインストールする。
 
 ```
-pip install pylint
-pip install requests
-pip install webdriver_manager
-pip install beautifulsoup4
-pip install lxml
-pip install openpyxl
-pip install selenium
-pip install PyMsgBox==1.0.7
-pip install pyautogui
-pip install youtube-dl
-pip install google_images_download
-pip install tensorflow==1.14
-pip install numpy==1.16.4
-pip install -U pyxel
-pip install Flask
-pip install dill
-pip install janome
-pip install opencv-python
-pip install pyocr
-pip install ImageHash
+pip install -r requirements.txt
+```
 
+# OCRをインストール
 https://gammasoft.jp/blog/tesseract-ocr-install-on-windows/
-```
+
 # ■機械学習
 作業フォルダ
 > src/machine_learning
@@ -65,19 +48,19 @@ https://gammasoft.jp/blog/tesseract-ocr-install-on-windows/
 ## ・画像取得
 JPEGファイルを  
 指定文字列『検索文字』で100件取得します。
-```
+```python
 python bing_scraper.py --search '炭治郎' --format 'jpg' --limit 20 --download --chromedriver chromedriver/chromedriver.exe
 ```
 
 ## ・画像解析
 学習回数＝1000回にしています。精度を上げたい場合は、  
 --how_many_training_steps=**1000**　←ここの数字を変更してください
-```
+```python
 python retrain.py --bottleneck_dir=bottlenecks --how_many_training_steps=100 --model_dir=inception --summaries_dir=training_summaries/basic --output_graph=retrained_graph.pb --output_labels=retrained_labels.txt --image_dir=images
 ```
 ## ・実行
 判別したい画像⇒ 『hanbetu1.jpg』
-``` 
+```
 python label_image.py --graph=retrained_graph.pb --labels=retrained_labels.txt --output_layer=final_result --image=images_test/hanbetu6.jpg --input_layer=Placeholder
 ```
 
