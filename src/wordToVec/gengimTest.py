@@ -5,8 +5,7 @@ model = word2vec.Word2Vec.load('wiki.vec.pt')
 
 
 # results = model.most_similar("日本")
-results = model.most_similar(positive=['人生'], negative=['愛']) 
-
+results = model.most_similar(positive=['夫婦'], negative=['思いやり']) 
 print("--------------------------------")
 print("WORD", "                類似度")
 print("--------------------------------")
